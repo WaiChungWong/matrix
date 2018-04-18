@@ -1,0 +1,8 @@
+# Dependency directories
+app/node_modules
+
+# Built css files in development
+app/**/*.css
+
+# Mac OS directory file
+.DS_Store

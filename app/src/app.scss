@@ -1,0 +1,144 @@
+@import "./variables.scss";
+
+#matrix-scene {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: $black;
+  overflow: hidden;
+
+  .matrix-play-button,
+  .matrix-camera-button,
+  .matrix-copy-button {
+    position: absolute;
+    top: -50px;
+    left: 0px;
+    margin: 10px;
+    border: 0px;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    width: 40px;
+    height: 40px;
+    appearance: none;
+    transition: 0.3s top;
+    cursor: pointer;
+
+    &.show {
+      top: 0px;
+    }
+  }
+
+  .matrix-camera-button {
+    left: 60px;
+  }
+
+  .matrix-copy-button {
+    left: 120px;
+
+    &::after {
+      position: absolute;
+      top: 0%;
+      left: 0%;
+      transition: all 0.5s;
+      opacity: 0;
+      border-radius: 50%;
+      background: $white;
+      width: 100%;
+      height: 100%;
+      content: "";
+    }
+
+    &:active::after {
+      top: 30%;
+      left: 30%;
+      transition: all 0s;
+      opacity: 1;
+      width: 40%;
+      height: 40%;
+    }
+  }
+
+  .matrix-color,
+  .matrix-font-size,
+  .matrix-line-height {
+    position: absolute;
+    right: 0px;
+    bottom: -50px;
+    margin: 10px;
+    transition: 0.3s bottom;
+
+    &.show {
+      bottom: 0px;
+    }
+
+    label,
+    input {
+      text-align: right;
+      color: $white;
+      font-family: Courier New, Courier, Andale Mono, monospace;
+      font-size: 12px;
+    }
+
+    label {
+      display: inline-block;
+      margin-right: 5px;
+      width: 50px;
+      vertical-align: middle;
+      text-shadow: 1px 1px 1px $black;
+      line-height: 12px;
+    }
+
+    input {
+      border: 1px solid $white;
+      background: $black;
+      width: 40px;
+      height: 20px;
+    }
+  }
+
+  .matrix-color {
+    right: 200px;
+  }
+
+  .matrix-color-picker {
+    box-shadow: 1px 1px 5px 0px $white;
+    vertical-align: middle;
+    margin: 2px 0px;
+  }
+
+  .matrix-font-size {
+    right: 100px;
+  }
+
+  .matrix-video {
+    display: none;
+  }
+
+  .matrix-canvas,
+  .matrix-ascii {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+  }
+
+  .matrix-canvas {
+    visibility: hidden;
+  }
+
+  .matrix-ascii-text {
+    cursor: default;
+    line-height: 5px;
+    color: $white;
+    font-size: 4px;
+
+    &::selection {
+      background: transparent;
+    }
+  }
+}
