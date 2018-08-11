@@ -1,0 +1,70 @@
+{
+  "name": "matrix",
+  "version": "0.1.0",
+  "description": "An imitation of a code scene in the 'Matrix' movie using ASCII.",
+  "author": "John Wong <johnwongwwc@gmail.com>",
+  "homepage": "https://waichungwong.github.io/matrix/build",
+  "dependencies": {
+    "classnames": "^2.2.6",
+    "jw-animate-canvas": "^0.1.2",
+    "jw-animator": "^0.1.3",
+    "jw-canvas-ascii": "^0.1.3",
+    "jw-color-picker": "^0.1.0",
+    "react": "^16.4.1",
+    "react-dom": "^16.4.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.6",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^5.2.0",
+    "eslint-plugin-react": "^7.10.0",
+    "node-sass": "^4.9.2",
+    "npm-run-all": "^4.1.3",
+    "react-scripts": "^1.1.4"
+  },
+  "scripts": {
+    "build-css": "node-sass src/ -o src/",
+    "watch-css": "npm run build-css && node-sass src/ -o src/ --watch",
+    "start-js": "react-scripts start",
+    "start": "npm-run-all -p watch-css start-js",
+    "build": "npm run build-css && react-scripts build"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "react"
+    ],
+    "plugins": [
+      "transform-object-rest-spread"
+    ]
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 8,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true,
+        "experimentalObjectRestSpread": true
+      }
+    },
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    },
+    "plugins": [
+      "react"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:react/recommended"
+    ],
+    "rules": {
+      "semi": 2,
+      "no-empty": 0
+    }
+  }
+}

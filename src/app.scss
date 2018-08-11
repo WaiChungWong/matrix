@@ -1,7 +1,8 @@
-@import "./variables.scss";
+$white: #ffffff;
+$black: #000000;
 
 #matrix-scene {
-  position: fixed;
+  position: absolute;
   top: 0px;
   left: 0px;
   width: 100%;
@@ -63,8 +64,7 @@
   }
 
   .matrix-color,
-  .matrix-font-size,
-  .matrix-line-height {
+  .matrix-font-size {
     position: absolute;
     right: 0px;
     bottom: -50px;
@@ -101,17 +101,20 @@
   }
 
   .matrix-color {
-    right: 200px;
-  }
+    right: 120px;
 
-  .matrix-color-picker {
-    box-shadow: 1px 1px 5px 0px $white;
-    vertical-align: middle;
-    margin: 2px 0px;
+    .matrix-color-picker {
+      vertical-align: middle;
+
+      &.show {
+        max-height: 230px;
+        opacity: 1;
+      }
+    }
   }
 
   .matrix-font-size {
-    right: 100px;
+    right: 20px;
   }
 
   .matrix-video {
@@ -122,9 +125,9 @@
   .matrix-ascii {
     position: absolute;
     top: 0px;
-    right: 0px;
-    bottom: 0px;
     left: 0px;
+    width: 100%;
+    height: 100%;
   }
 
   .matrix-canvas {
@@ -139,6 +142,26 @@
 
     &::selection {
       background: transparent;
+    }
+  }
+
+  .loading-overlay {
+    position: fixed;
+    width: 100%;
+    height: 0px;
+    overflow: hidden;
+
+    &.show {
+      height: 100%;
+    }
+
+    pre {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 16px;
+      text-shadow: 0px 0px 2px $black;
     }
   }
 }

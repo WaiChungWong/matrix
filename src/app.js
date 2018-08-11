@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import ClassNames from "classnames";
 import PropTypes from "prop-types";
-import Animator from "@jworkshop/animator";
-import CanvasAnimator from "@jworkshop/canvasanimator";
-import CanvasAsciifier from "@jworkshop/canvasasciifier";
-import ColorPicker from "@jworkshop/colorpicker";
-import getUserMedia from "getusermedia";
+import Animator from "jw-animator";
+import AnimateCanvas from "jw-animate-canvas";
+import CanvasASCII from "jw-canvas-ascii";
+import ColorPicker from "jw-color-picker";
 
 import InputField from "./inputfield";
 import Rain from "./rain";
 
-import demoSource from "./resources/demo.ogv";
+import demoSource from "./resources/demo.mp4";
 import play from "./resources/play.png";
 import pause from "./resources/pause.png";
 import camera from "./resources/camera.png";
@@ -27,39 +26,46 @@ class App extends Component {
 
     const { animator } = props;
 
-    animator.pauseOnHidden = true;
-    animator.resumeOnShown = true;
+    animator.setPauseOnHidden(true);
+    animator.setResumeOnShown(true);
 
     this.state = {
-      showMenu: false,
+      loading: true,
+      show: false,
       paused: false,
       onCamera: false,
       color: { r: 0, g: 128, b: 0, a: 1 },
-      fontSize: 7,
-      lineHeight: 7,
-      source: demoSource
+      fontSize: 7
     };
 
     this.rain = new Rain();
+
+    this.animate = this.animate.bind(this);
+    this.screenClickHandler = this.screenClickHandler.bind(this);
+    this.playClickHandler = this.playClickHandler.bind(this);
+    this.cameraClickHandler = this.cameraClickHandler.bind(this);
+    this.copyClickHandler = this.copyClickHandler.bind(this);
+    this.draw = this.draw.bind(this);
   }
 
   componentDidMount() {
-    const { canvas } = this;
+    const { video, ascii, canvas, props } = this;
+    const { animator } = props;
 
-    canvas.start();
-  }
+    animator.onStart(() => video.play());
+    animator.onPause(() => video.pause());
+    animator.onResume(() => video.play());
 
-  pauseHandler() {
-    this.video.pause();
-  }
+    ascii.setCanvas(canvas.canvas);
 
-  resumeHandler() {
-    this.video.play();
+    video.src = demoSource;
+
+    animator.start();
   }
 
   screenClickHandler() {
-    const { showMenu } = this.state;
-    this.setState({ showMenu: !showMenu });
+    const { show } = this.state;
+    this.setState({ show: !show });
   }
 
   playClickHandler() {
@@ -75,26 +81,35 @@ class App extends Component {
     this.setState({ paused: !paused });
   }
 
-  cameraClickHandler() {
+  async cameraClickHandler() {
+    const { video } = this;
+    const { animator } = this.props;
     const { onCamera } = this.state;
 
+    animator.pause();
+
     if (onCamera) {
-      this.setState({ onCamera: false, source: demoSource });
+      video.srcObject = undefined;
+      video.src = demoSource;
+      this.setState({ onCamera: false });
     } else {
-      getUserMedia((error, stream) => {
+      try {
+        let stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
         if (stream) {
-          this.setState({
-            onCamera: true,
-            source: window.URL.createObjectURL(stream)
-          });
+          video.srcObject = stream;
+          video.src = undefined;
+          this.setState({ onCamera: true });
         }
-      });
+      } catch (error) {}
     }
+
+    animator.resume();
   }
 
   copyClickHandler() {
-    const { asciifier } = this;
-    const asciiElement = asciifier.getTextElement();
+    const { ascii } = this;
+    const asciiElement = ascii.getTextElement();
     const range = document.createRange();
     const selection = window.getSelection();
 
@@ -103,13 +118,14 @@ class App extends Component {
     selection.addRange(range);
 
     document.execCommand("Copy");
+
+    selection.removeAllRanges();
   }
 
   draw() {
-    const { rain, video, canvas, asciifier } = this;
+    const { rain, video, canvas, ascii } = this;
     const context = canvas.getContext();
-    const width = canvas.getCanvasWidth();
-    const height = canvas.getCanvasHeight();
+    const { width, height } = canvas.getCanvasElement();
 
     /* Clear the canvas screen. */
     context.clearRect(0, 0, width, height);
@@ -117,10 +133,10 @@ class App extends Component {
     /* Paint the video onto the canvas. */
     context.drawImage(video, 0, 0, width, height);
 
-    rain.draw(context, width, height, asciifier.textWidth);
+    rain.draw(context, width, height, ascii.textWidth);
 
     /* Update the acsii code from the canvas. */
-    asciifier.update(canvas.getCanvasElement());
+    ascii.update(canvas.getCanvasElement());
   }
 
   animate(context, width, height, timeDiff) {
@@ -132,64 +148,52 @@ class App extends Component {
 
   render() {
     const { animator } = this.props;
-    const {
-      showMenu: show,
-      paused,
-      onCamera,
-      color,
-      fontSize,
-      lineHeight,
-      source
-    } = this.state;
+    const { loading, show, paused, onCamera, color, fontSize } = this.state;
     const { r, g, b, a } = color;
 
     return (
       <div id="matrix-scene">
         <video
-          ref={video => (this.video = video)}
+          ref={v => (this.video = v)}
           className="matrix-video"
-          src={source}
+          preload="auto"
           autoPlay={true}
           loop={true}
           muted={true}
+          controls={true}
+          onCanPlay={() => this.setState({ loading: false })}
         />
-        <CanvasAnimator
-          ref={canvas => (this.canvas = canvas)}
+        <AnimateCanvas
+          ref={c => (this.canvas = c)}
           className="matrix-canvas"
           animator={animator}
-          animate={(context, width, height, timeDiff) =>
-            this.animate(context, width, height, timeDiff)
-          }
-          onResize={() => this.draw()}
-          onPause={() => this.pauseHandler()}
-          onResume={() => this.resumeHandler()}
+          animate={this.animate}
+          onResize={this.draw}
         />
-        <CanvasAsciifier
-          ref={asciifier => (this.asciifier = asciifier)}
+        <CanvasASCII
+          ref={a => (this.ascii = a)}
           className="matrix-ascii"
-          textClassName="matrix-ascii-text"
-          textStyle={{
+          style={{
             color: `rgba(${r}, ${g}, ${b}, ${a})`,
-            fontSize: `${parseInt(fontSize, 10)}px`,
-            lineHeight: `${parseInt(lineHeight, 10)}px`
+            fontSize: `${parseInt(fontSize, 10)}px`
           }}
           invert={true}
-          onClick={() => this.screenClickHandler()}
+          onClick={this.screenClickHandler}
         />
         <button
           className={ClassNames("matrix-play-button", { paused, show })}
           style={{ backgroundImage: `url(${paused ? play : pause})` }}
-          onClick={() => this.playClickHandler()}
+          onClick={this.playClickHandler}
         />
         <button
           className={ClassNames("matrix-camera-button", { show })}
           style={{ backgroundImage: `url(${onCamera ? movie : camera})` }}
-          onClick={() => this.cameraClickHandler()}
+          onClick={this.cameraClickHandler}
         />
         <button
           className={ClassNames("matrix-copy-button", { show })}
           style={{ backgroundImage: `url(${copy})` }}
-          onClick={() => this.copyClickHandler()}
+          onClick={this.copyClickHandler}
         />
         <div className={ClassNames("matrix-color", { show })}>
           <label htmlFor="color">color</label>
@@ -206,18 +210,12 @@ class App extends Component {
           label="font size"
           value={fontSize}
           onChange={value =>
-            this.setState({ fontSize: max(2, value) }, () => this.draw())
+            this.setState({ fontSize: max(2, value) }, this.draw)
           }
         />
-        <InputField
-          id="lineHeight"
-          className={ClassNames("matrix-line-height", { show })}
-          label="line height"
-          value={lineHeight}
-          onChange={value =>
-            this.setState({ lineHeight: max(2, value) }, () => this.draw())
-          }
-        />
+        <div className={ClassNames("loading-overlay", { show: loading })}>
+          <pre style={{ color: `rgba(${r}, ${g}, ${b}, ${a})` }}>Loading</pre>
+        </div>
       </div>
     );
   }
