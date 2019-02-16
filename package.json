@@ -6,24 +6,22 @@
   "homepage": "https://waichungwong.github.io/matrix/build",
   "dependencies": {
     "classnames": "^2.2.6",
-    "jw-animate-canvas": "^0.1.2",
-    "jw-animator": "^0.1.3",
-    "jw-canvas-ascii": "^0.1.3",
-    "jw-color-picker": "^0.1.0",
-    "react": "^16.4.1",
-    "react-dom": "^16.4.1"
+    "jw-animate-canvas": "^0.1.5",
+    "jw-animator": "^0.1.5",
+    "jw-canvas-ascii": "^0.1.5",
+    "jw-color-picker": "^0.1.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-eslint": "^8.2.6",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "eslint": "^5.2.0",
-    "eslint-plugin-react": "^7.10.0",
-    "node-sass": "^4.9.2",
-    "npm-run-all": "^4.1.3",
-    "react-scripts": "^1.1.4"
+    "eslint-plugin-react": "^7.12.2",
+    "node-sass": "^4.11.0",
+    "npm-run-all": "^4.1.5",
+    "react": "^16.8.2",
+    "react-dom": "^16.8.2",
+    "react-scripts": "^2.1.2"
   },
   "scripts": {
     "build-css": "node-sass src/ -o src/",
@@ -66,5 +64,11 @@
       "semi": 2,
       "no-empty": 0
     }
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

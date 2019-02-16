@@ -1,8 +1,17 @@
 {
-  "main.css": "static/css/main.3baa9c97.css",
-  "main.css.map": "static/css/main.3baa9c97.css.map",
-  "main.js": "static/js/main.a0d8be36.js",
-  "main.js.map": "static/js/main.a0d8be36.js.map",
-  "static/media/demo.mp4": "static/media/demo.51d033d6.mp4",
-  "static/media/gradient.png": "static/media/gradient.c7a33805.png"
+  "main.css": "/matrix/build/static/css/main.ba2bd2f3.chunk.css",
+  "main.js": "/matrix/build/static/js/main.a5b90611.chunk.js",
+  "main.js.map": "/matrix/build/static/js/main.a5b90611.chunk.js.map",
+  "runtime~main.js": "/matrix/build/static/js/runtime~main.8ed10867.js",
+  "runtime~main.js.map": "/matrix/build/static/js/runtime~main.8ed10867.js.map",
+  "static/css/2.f2605fd6.chunk.css": "/matrix/build/static/css/2.f2605fd6.chunk.css",
+  "static/js/2.4d3ad1c9.chunk.js": "/matrix/build/static/js/2.4d3ad1c9.chunk.js",
+  "static/js/2.4d3ad1c9.chunk.js.map": "/matrix/build/static/js/2.4d3ad1c9.chunk.js.map",
+  "index.html": "/matrix/build/index.html",
+  "precache-manifest.1421112f5f38ab9533055db3d2991a63.js": "/matrix/build/precache-manifest.1421112f5f38ab9533055db3d2991a63.js",
+  "service-worker.js": "/matrix/build/service-worker.js",
+  "static/css/2.f2605fd6.chunk.css.map": "/matrix/build/static/css/2.f2605fd6.chunk.css.map",
+  "static/css/main.ba2bd2f3.chunk.css.map": "/matrix/build/static/css/main.ba2bd2f3.chunk.css.map",
+  "static/media/demo.mp4": "/matrix/build/static/media/demo.51d033d6.mp4",
+  "static/media/gradient.png": "/matrix/build/static/media/gradient.c7a33805.png"
 }

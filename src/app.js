@@ -34,7 +34,7 @@ class App extends Component {
       show: false,
       paused: false,
       onCamera: false,
-      color: { r: 0, g: 128, b: 0, a: 1 },
+      color: { r: 10, g: 150, b: 10, a: 1 },
       fontSize: 7
     };
 
