@@ -6,7 +6,7 @@
   "homepage": "https://waichungwong.github.io/matrix/build",
   "dependencies": {
     "classnames": "^2.2.6",
-    "jw-animate-canvas": "^0.1.5",
+    "jw-animate-canvas": "^0.1.6",
     "jw-animator": "^0.1.5",
     "jw-canvas-ascii": "^0.1.5",
     "jw-color-picker": "^0.1.2"
